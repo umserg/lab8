@@ -1,74 +1,99 @@
 public class AccountManager {
     private Account account;
     private double companyOverdraftDiscount = 1;
+    private AccountHandler accountHandler;
 
     public AccountManager(Account account, double companyOverdraftDiscount) {
         this.account = account;
         this.companyOverdraftDiscount = companyOverdraftDiscount;
+        setUpAccountHandler();
     }
 
     public AccountManager(Account account) {
         this.account = account;
+        setUpAccountHandler();
+    }
+
+    // Ініціалізує відповідний обробник рахунку на основі типу клієнта
+    private void setUpAccountHandler() {
+        if (account.getCustomer().getCustomerType() == CustomerType.PERSON) {
+            this.accountHandler = new PersonAccountHandler(account);
+        } else {
+            this.accountHandler = new CompanyAccountHandler(account, companyOverdraftDiscount);
+        }
     }
 
     /**
      * Знімає певну суму грошей з рахунку у вказаній валюті.
      * Викидає виняток, якщо валюта не співпадає з валютою рахунку.
      *
-     * @param customerType тип клієнта (COMPANY або PERSON)
      * @param sum сума для зняття
      * @param currency валюта для зняття
      */
-    public void withdraw(CustomerType customerType, double sum, String currency) {
+    public void withdraw(double sum, String currency) {
         // Перевірка, чи валюта співпадає з валютою рахунку
         if (!account.getCurrency().equals(currency)) {
             throw new RuntimeException("Can't withdraw " + currency);
         }
-        // Здійснити зняття залежно від типу клієнта та типу рахунку
-        executeWithdrawalForCustomerType(customerType, sum);
+        // Виконати зняття через відповідний обробник
+        accountHandler.withdraw(sum);
     }
 
-    /**
-     * Виконує зняття грошей для певного типу клієнта.
-     *
-     * @param customerType тип клієнта (COMPANY або PERSON)
-     * @param sum сума для зняття
-     */
-    private void executeWithdrawalForCustomerType(CustomerType customerType, double sum) {
-        if (account.getType().isPremium()) {
-            if (customerType == CustomerType.COMPANY) {
-                // Преміум рахунок для компанії
-                // Застосувати 50% знижку на овердрафт, якщо є овердрафт
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, companyOverdraftDiscount / 2));
+    // Абстрактний клас для обробки рахунків
+    private abstract class AccountHandler {
+        protected Account account;
+
+        public AccountHandler(Account account) {
+            this.account = account;
+        }
+
+        public abstract void withdraw(double sum);
+    }
+
+    // Обробник рахунків для фізичних осіб
+    private class PersonAccountHandler extends AccountHandler {
+        public PersonAccountHandler(Account account) {
+            super(account);
+        }
+
+        @Override
+        public void withdraw(double sum) {
+            double balance = account.getMoney();
+
+            if (balance < 0) {
+                account.setMoney(balance - sum - sum * account.overdraftFee());
             } else {
-                // Преміум рахунок для фізичної особи
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, 1));
-            }
-        } else {
-            if (customerType == CustomerType.COMPANY) {
-                // Звичайний рахунок для компанії
-                // Повна ставка на овердрафт, якщо є овердрафт
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, companyOverdraftDiscount));
-            } else {
-                // Звичайний рахунок для фізичної особи
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, 1));
+                account.setMoney(balance - sum);
             }
         }
     }
 
-    /**
-     * Допоміжний метод для фактичного зняття коштів.
-     *
-     * @param sum сума для зняття
-     * @param isInOverdraft чи є овердрафт
-     * @param overdraftDiscount знижка на овердрафт
-     * @return новий баланс рахунку після зняття коштів
-     */
-    private double executeWithdrawal(double sum, boolean isInOverdraft, double overdraftDiscount) {
-        if (isInOverdraft) {
-            return (account.getMoney() - sum) - sum * account.overdraftFee() * overdraftDiscount;
-        } else {
-            return account.getMoney() - sum;
+    // Обробник рахунків для компаній
+    private class CompanyAccountHandler extends AccountHandler {
+        private double companyOverdraftDiscount;
+
+        public CompanyAccountHandler(Account account, double companyOverdraftDiscount) {
+            super(account);
+            this.companyOverdraftDiscount = companyOverdraftDiscount;
+        }
+
+        @Override
+        public void withdraw(double sum) {
+            double balance = account.getMoney();
+            // Додали перевірку на преміум-рахунок
+            if (account.getType().isPremium()) {
+                if (balance < 0) {
+                    account.setMoney(balance - sum - sum * account.overdraftFee() * companyOverdraftDiscount / 2);
+                } else {
+                    account.setMoney(balance - sum);
+                }
+            } else {
+                if (balance < 0) {
+                    account.setMoney(balance - sum - sum * account.overdraftFee() * companyOverdraftDiscount);
+                } else {
+                    account.setMoney(balance - sum);
+                }
+            }
         }
     }
 }
