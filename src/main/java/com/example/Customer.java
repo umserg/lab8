@@ -5,7 +5,6 @@ public class Customer {
     private String email;
     private CustomerType customerType;
     private Account account;
-    private double companyOverdraftDiscount = 1;
 
     public Customer(String name, String surname, String email, CustomerType customerType, Account account) {
         this.name = name;
@@ -20,38 +19,6 @@ public class Customer {
         this.email = email;
         this.customerType = CustomerType.COMPANY;
         this.account = account;
-        this.companyOverdraftDiscount = companyOverdraftDiscount;
-    }
-
-    public void withdraw(double sum, String currency) {
-        if (!account.getCurrency().equals(currency)) {
-            throw new RuntimeException("Can't withdraw " + currency);
-        }
-        executeWithdrawalForCustomerType(sum);
-    }
-
-    private void executeWithdrawalForCustomerType(double sum) {
-        if (account.getType().isPremium()) {
-            if (customerType == CustomerType.COMPANY) {
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, companyOverdraftDiscount / 2));
-            } else {
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, 1));
-            }
-        } else {
-            if (customerType == CustomerType.COMPANY) {
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, companyOverdraftDiscount));
-            } else {
-                account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, 1));
-            }
-        }
-    }
-
-    private double executeWithdrawal(double sum, boolean isInOverdraft, double overdraftDiscount) {
-        if (isInOverdraft) {
-            return (account.getMoney() - sum) - sum * account.overdraftFee() * overdraftDiscount;
-        } else {
-            return account.getMoney() - sum;
-        }
     }
 
     public String getFullName() {
