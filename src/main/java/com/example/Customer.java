@@ -15,7 +15,6 @@ public class Customer {
         this.account = account;
     }
 
-    // Використовувати тільки для створення компаній
     public Customer(String name, String email, Account account, double companyOverdraftDiscount) {
         this.name = name;
         this.email = email;
@@ -31,38 +30,34 @@ public class Customer {
         if (account.getType().isPremium()) {
             switch (customerType) {
                 case COMPANY:
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee() * companyOverdraftDiscount / 2);
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, companyOverdraftDiscount / 2));
                     break;
                 case PERSON:
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, 1));
                     break;
             }
         } else {
             switch (customerType) {
                 case COMPANY:
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee() * companyOverdraftDiscount);
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, companyOverdraftDiscount));
                     break;
                 case PERSON:
-                    if (account.getMoney() < 0) {
-                        account.setMoney((account.getMoney() - sum) - sum * account.overdraftFee());
-                    } else {
-                        account.setMoney(account.getMoney() - sum);
-                    }
+                    account.setMoney(executeWithdrawal(sum, account.getMoney() < 0, 1));
                     break;
             }
         }
+    }
+
+    private double executeWithdrawal(double sum, boolean isInOverdraft, double overdraftDiscount) {
+        if (isInOverdraft) {
+            return (account.getMoney() - sum) - sum * account.overdraftFee() * overdraftDiscount;
+        } else {
+            return account.getMoney() - sum;
+        }
+    }
+
+    public String getFullName() {
+        return name + " " + surname;
     }
 
     public String getName() {
@@ -90,13 +85,13 @@ public class Customer {
     }
 
     public String printCustomerDaysOverdrawn() {
-        String fullName = name + " " + surname + " ";
+        String fullName = getFullName() + " ";
         String accountDescription = "Account: IBAN: " + account.getIban() + ", Days Overdrawn: " + account.getDaysOverdrawn();
         return fullName + accountDescription;
     }
 
     public String printCustomerMoney() {
-        String fullName = name + " " + surname + " ";
+        String fullName = getFullName() + " ";
         String accountDescription = "Account: IBAN: " + account.getIban() + ", Money: " + account.getMoney();
         return fullName + accountDescription;
     }
