@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b82b3bf9-b6b6-4176-95eb-971894c959d7" name="Changes" comment="">
+    <list default="true" id="9a5da06d-6d19-4e01-9fe9-2f23306eacae" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/example/CustomerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/example/CustomerTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Customer.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Customer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/example/AccountManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/example/AccountManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/AccountManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/AccountManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,21 +25,14 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;JUnit.AccountTest.executor&quot;: &quot;Run&quot;,
-    &quot;JUnit.CustomerTest.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;;: &quot;C:/Users/user/.m2/repository/junit/junit/4.13.2/junit-4.13.2.jar&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "JUnit.AccountTest.executor": "Run",
+    "JUnit.CustomerTest.executor": "Run",
+    "git-widget-placeholder": "main"
   }
-}</component>
-  <component name="RunManager" selected="JUnit.AccountTest">
+}]]></component>
+  <component name="RunManager" selected="JUnit.CustomerTest">
     <configuration name="AccountTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="lab8" />
       <option name="PACKAGE_NAME" value="" />
@@ -56,19 +51,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Unnamed" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
-      <module name="lab8" />
-      <option name="MAIN_CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <recent_temporary>
       <list>
-          <item itemvalue="JUnit.AccountTest" />
-          <item itemvalue="JUnit.CustomerTest" />
+        <item itemvalue="JUnit.CustomerTest" />
+        <item itemvalue="JUnit.AccountTest" />
       </list>
     </recent_temporary>
   </component>
