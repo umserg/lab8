@@ -4,11 +4,14 @@ import static org.junit.Assert.assertThat;
 
 public class CustomerTest {
 
+    // інші тести ...
+
     @Test
     public void testWithdrawPersonWithNormalAccount() throws Exception {
         Account account = getAccountByTypeAndMoney(false, 34.0);
         Customer customer = getPersonCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(24.0));
     }
 
@@ -16,7 +19,8 @@ public class CustomerTest {
     public void testWithdrawPersonWithNormalAccountAndOverdraft() throws Exception {
         Account account = getAccountByTypeAndMoney(false, -10.0);
         Customer customer = getPersonCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(-22.0));
     }
 
@@ -24,7 +28,8 @@ public class CustomerTest {
     public void testWithdrawPersonWithPremiumAccount() throws Exception {
         Account account = getAccountByTypeAndMoney(true, 34.0);
         Customer customer = getPersonCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(24.0));
     }
 
@@ -32,7 +37,8 @@ public class CustomerTest {
     public void testWithdrawPersonWithPremiumAccountAndOverdraft() throws Exception {
         Account account = getAccountByTypeAndMoney(true, -10.0);
         Customer customer = getPersonCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(-21.0));
     }
 
@@ -40,7 +46,8 @@ public class CustomerTest {
     public void testWithdrawCompanyWithNormalAccount() throws Exception {
         Account account = getAccountByTypeAndMoney(false, 34);
         Customer customer = getCompanyCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account, 0.50);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(24.0));
     }
 
@@ -48,7 +55,8 @@ public class CustomerTest {
     public void testWithdrawCompanyWithNormalAccountAndOverdraft() throws Exception {
         Account account = getAccountByTypeAndMoney(false, -10);
         Customer customer = getCompanyCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account, 0.50);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(-21.0));
     }
 
@@ -56,7 +64,8 @@ public class CustomerTest {
     public void testWithdrawCompanyWithPremiumAccount() throws Exception {
         Account account = getAccountByTypeAndMoney(true, 34);
         Customer customer = getCompanyCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account, 0.50);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(24.0));
     }
 
@@ -64,7 +73,8 @@ public class CustomerTest {
     public void testWithdrawCompanyWithPremiumAccountAndOverdraft() throws Exception {
         Account account = getAccountByTypeAndMoney(true, -10);
         Customer customer = getCompanyCustomer(account);
-        customer.withdraw(10, "EUR");
+        AccountManager manager = new AccountManager(account, 0.50);
+        manager.withdraw(customer.getCustomerType(), 10, "EUR");
         assertThat(account.getMoney(), is(-20.25));
     }
 
