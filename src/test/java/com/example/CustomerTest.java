@@ -4,6 +4,8 @@ import static org.junit.Assert.assertThat;
 
 public class CustomerTest {
 
+    // інші тести ...
+
     @Test
     public void testWithdrawPersonWithNormalAccount() throws Exception {
         Account account = getAccountByTypeAndMoney(false, 34.0);
